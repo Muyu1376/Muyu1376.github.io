@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Verilog学习笔记4，移位运算与乘法 | 暮雨</title><meta name="keywords" content="编程,代码学习,Verilog"><meta name="author" content="Muyu,space.astronomy1376@163.com"><meta name="copyright" content="Muyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="Verilog学习笔记4，移位运算与乘法题目已知d为一个8位数，请在每个时钟周期分别输出该数乘1&#x2F;3&#x2F;7&#x2F;8,并输出一个信号通知此时刻输入的d有效（d给出的信号的上升沿表示写入有效）   移位运算符&lt;&lt;&#96;&#96;&gt;&gt; 移位运算符是有两个操作数的双目运算符 移位可以实现无符号数的乘除法和有符号数的乘法，但是要注意是否为有符号数或者是否超出数据表示范围">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Verilog学习笔记4，移位运算与乘法">
+<meta property="og:url" content="https://www.muyu1376.xyz/post/81715675.html">
+<meta property="og:site_name" content="暮雨">
+<meta property="og:description" content="Verilog学习笔记4，移位运算与乘法题目已知d为一个8位数，请在每个时钟周期分别输出该数乘1&#x2F;3&#x2F;7&#x2F;8,并输出一个信号通知此时刻输入的d有效（d给出的信号的上升沿表示写入有效）   移位运算符&lt;&lt;&#96;&#96;&gt;&gt; 移位运算符是有两个操作数的双目运算符 移位可以实现无符号数的乘除法和有符号数的乘法，但是要注意是否为有符号数或者是否超出数据表示范围">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i0.hdslb.com/bfs/new_dyn/4a449b30229b3128071e9b4b7ce2bfea401742377.png">
+<meta property="article:published_time" content="2022-07-19T18:41:45.000Z">
+<meta property="article:modified_time" content="2022-07-19T18:45:26.878Z">
+<meta property="article:author" content="Muyu">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="代码学习">
+<meta property="article:tag" content="Verilog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i0.hdslb.com/bfs/new_dyn/4a449b30229b3128071e9b4b7ce2bfea401742377.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.muyu1376.xyz/post/81715675"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Muyu","link":"链接: ","source":"来源: 暮雨","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Verilog学习笔记4，移位运算与乘法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-07-20 02:45:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/wallpaper/"><i class="fa-fw fas fa-heart"></i><span> 壁纸</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i0.hdslb.com/bfs/new_dyn/4a449b30229b3128071e9b4b7ce2bfea401742377.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">暮雨</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/wallpaper/"><i class="fa-fw fas fa-heart"></i><span> 壁纸</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Verilog学习笔记4，移位运算与乘法<a class="post-edit-link" href="https://github.com/Muyu1376/Blog/tree/main/source/_posts/verilog4.md" rel="external nofollow noreferrer" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-19T18:41:45.000Z" title="发表于 2022-07-20 02:41:45">2022-07-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-07-19T18:45:26.878Z" title="更新于 2022-07-20 02:45:26">2022-07-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Verilog/">Verilog</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Verilog学习笔记4，移位运算与乘法"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Verilog学习笔记4，移位运算与乘法"><a href="#Verilog学习笔记4，移位运算与乘法" class="headerlink" title="Verilog学习笔记4，移位运算与乘法"></a>Verilog学习笔记4，移位运算与乘法</h2><h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>已知d为一个8位数，请在每个时钟周期分别输出该数乘1&#x2F;3&#x2F;7&#x2F;8,并输出一个信号通知此时刻输入的d有效（d给出的信号的上升沿表示写入有效）</p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20220315/110_1647318289820/1A8A63B78DE007D1361C622558D99390"></p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20220315/110_1647318319333/C0A9FB65EE4D95CB5989F19D204C8C3D"></p>
+<h3 id="移位运算符"><a href="#移位运算符" class="headerlink" title="移位运算符"></a>移位运算符</h3><p><code>&lt;&lt;``&gt;&gt;</code></p>
+<p>移位运算符是有两个操作数的双目运算符</p>
+<p>移位可以实现<strong>无符号数</strong>的<strong>乘除法</strong>和<strong>有符号数</strong>的<strong>乘法</strong>，但是要注意是否为有符号数或者是否超出数据表示范围</p>
+<p>在讨论乘法问题之前，先讨论一下<strong>原码补码反码</strong>的有关问题</p>
+<p>机器数：一个数在计算机的存储形式是二进制数，机器数是有符号，在计算机中用机器数的最高位存放符号位，0表示正数，1表示负数。</p>
+<p>正数的原码&#x3D;反码&#x3D;补码</p>
+<p>负数反码是原码最高位即符号位保持不变，其余位分别取反</p>
+<p>负数的补码是在反码的基础上最低位+1</p>
+<p>移位运算实际上是进行的<strong>补零</strong>操作,因此不存在循环移位</p>
+<p><code>&lt;&lt;</code>左移位即在低位补零，无符号数或有符号数的乘法，左移一位相当于乘2</p>
+<p><code>&gt;&gt;</code>右移位即在高位补零，实现无符号数的除法，右移一位相当于除2</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="number">4&#x27;b0010</span></span><br><span class="line">x&lt;&lt;<span class="number">1</span>=<span class="number">4&#x27;b0100</span></span><br><span class="line">x&gt;&gt;<span class="number">1</span>=<span class="number">4&#x27;b0001</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>至于为什么不能实现有符号数的除法，原因在于其补零</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="number">4&#x27;b1010</span></span><br><span class="line">x&lt;&lt;<span class="number">1</span>=<span class="number">4&#x27;b0100</span></span><br><span class="line">x&gt;&gt;<span class="number">1</span>=<span class="number">4&#x27;b0101</span></span><br></pre></td></tr></table></figure>
+
+<p>有符号数用补码表示，在补码中，负数的符号位是1，但是右移的时候补了0，因此产生了错误</p>
+<h3 id="拼接运算符"><a href="#拼接运算符" class="headerlink" title="拼接运算符"></a>拼接运算符</h3><p><code>&#123;&#125;</code>是拼接运算符,能够实现<strong>拼接和复制</strong>操作</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">2&#x27;b01</span>;</span><br><span class="line">b=<span class="number">3&#x27;b101</span>；</span><br><span class="line"></span><br><span class="line">c=&#123;a,b&#125;=<span class="number">5&#x27;b01101</span>;<span class="comment">//拼接两个变量</span></span><br><span class="line">d=&#123;<span class="number">4&#x27;b0101</span>,b&#125;=<span class="number">7&#x27;b0101101</span>;<span class="comment">//拼接数字和变量</span></span><br><span class="line">e=&#123;<span class="number">2</span>&#123;a&#125;&#125;=<span class="number">4&#x27;b0101</span>;<span class="comment">//对a进行复制操作，复制了两次</span></span><br></pre></td></tr></table></figure>
+
+<p>拼接和复制操作也可以一起使用。</p>
+<p>利用拼接运算符也可以实现有符号数的乘除法以及无符号数的<strong>乘除法</strong></p>
+<p>即在数据上拼接0</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">4&#x27;b1101</span>;</span><br><span class="line"></span><br><span class="line">b=&#123;a[<span class="number">2</span>:<span class="number">0</span>],<span class="number">1&#x27;b0</span>&#125;=<span class="number">4&#x27;b1010</span>;<span class="comment">//乘法</span></span><br><span class="line">c=&#123;<span class="number">1&#x27;b0</span>,a[<span class="number">3</span>:<span class="number">1</span>]&#125;=<span class="number">4&#x27;b0110</span>;<span class="comment">//无符号数除法</span></span><br><span class="line">d=&#123;<span class="number">1&#x27;b1</span>,a[<span class="number">3</span>:<span class="number">1</span>]&#125;=<span class="number">4&#x27;b1110</span>;<span class="comment">//有符号数除法</span></span><br><span class="line">e=&#123;a[<span class="number">3</span>],a[<span class="number">3</span>:<span class="number">1</span>]&#125;=<span class="number">4&#x27;b1110</span>;<span class="comment">//除法</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h3><p>根据时序图分析，要对输入实现寄存，只有在<code>grant</code>信号的上升沿的输入，才会在接下来的四个时钟周期中进行计算输出。</p>
+<p>在<code>grant</code>不为上升沿的时候,即使输入发生改变，也不会对输出产生影响。</p>
+<p>因此题目中可以采用计时器<code>cnt</code>，同时还需要一个寄存变量<code>temp</code>来存储在上升沿时刻grant的数值。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">`<span class="keyword">timescale</span> 1ns/1ns</span></span><br><span class="line"><span class="keyword">module</span> multi_sel(</span><br><span class="line"><span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>]d ,</span><br><span class="line"><span class="keyword">input</span> clk,</span><br><span class="line"><span class="keyword">input</span> rst,</span><br><span class="line"><span class="keyword">output</span> <span class="keyword">reg</span> input_grant,</span><br><span class="line"><span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">10</span>:<span class="number">0</span>]out</span><br><span class="line">);</span><br><span class="line"><span class="comment">//*************code***********//</span></span><br><span class="line">    <span class="keyword">reg</span>    [<span class="number">1</span>:<span class="number">0</span>]    cnt;</span><br><span class="line">    <span class="keyword">reg</span>    [<span class="number">7</span>:<span class="number">0</span>]    d_temp;</span><br><span class="line">    <span class="keyword">always</span>@(<span class="keyword">posedge</span> clk <span class="keyword">or</span> <span class="keyword">negedge</span> rst)<span class="keyword">begin</span> </span><br><span class="line">        <span class="keyword">if</span>(!rst)<span class="keyword">begin</span></span><br><span class="line">            cnt &lt;= <span class="number">0</span>;</span><br><span class="line">            d_temp &lt;=<span class="number">0</span>;</span><br><span class="line">            out &lt;=<span class="number">0</span>;</span><br><span class="line">            input_grant &lt;=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">            cnt &lt;= cnt+<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">case</span>(cnt)</span><br><span class="line">                <span class="number">2&#x27;b00</span>: <span class="keyword">begin</span></span><br><span class="line">                    d_temp &lt;= d;</span><br><span class="line">                    input_grant &lt;=<span class="number">1</span>;</span><br><span class="line">                    out &lt;= d;</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">                <span class="number">2&#x27;b01</span>: <span class="keyword">begin</span></span><br><span class="line">                    </span><br><span class="line">                    input_grant &lt;=<span class="number">0</span>;</span><br><span class="line">                    out &lt;= d_temp &lt;&lt; <span class="number">1</span> +d_temp;</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">                <span class="number">2&#x27;b10</span>: <span class="keyword">begin</span></span><br><span class="line">                    </span><br><span class="line">                    input_grant &lt;=<span class="number">0</span>;</span><br><span class="line">                    out &lt;= d_temp &lt;&lt; <span class="number">3</span> -d_temp;</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">                <span class="number">2&#x27;b10</span>: <span class="keyword">begin</span></span><br><span class="line">                    </span><br><span class="line">                    input_grant &lt;=<span class="number">0</span>;</span><br><span class="line">                    out &lt;= d_temp &lt;&lt; <span class="number">3</span>;</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">endcase</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="comment">//*************code***********//</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<p>笔者在编写代码的时候出现了阻塞赋值与非阻塞赋值的相关错误，在代码第25行，将d_temp赋值给了out，但是由于采用非阻塞赋值，此时的d_temp!&#x3D;d,造成输出错误。</p>
+<h3 id="阻塞赋值与非阻塞赋值"><a href="#阻塞赋值与非阻塞赋值" class="headerlink" title="阻塞赋值与非阻塞赋值"></a>阻塞赋值与非阻塞赋值</h3><p><strong>阻塞赋值</strong>：前面语句执行完，才可执行下一条语句，即将系统的运行阻塞住，停顿下来</p>
+<p><strong>非阻塞赋值</strong>：always块内，赋值语句同时执行</p>
+<p>注：</p>
+<ol>
+<li>在使用组合逻辑电路时使用阻塞赋值</li>
+<li>在描述时序逻辑电路时使用非阻塞赋值</li>
+<li>阻塞赋值与非阻塞赋值不要同时出现在同一个always块内。即要么全部使用阻塞赋值要么全部使用非阻塞赋值，或者将阻塞赋值与非阻塞赋值放置于不同always块内书写</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://www.muyu1376.xyz/">Muyu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.muyu1376.xyz/post/81715675.html">https://www.muyu1376.xyz/post/81715675.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.muyu1376.xyz" target="_blank">暮雨</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0/">代码学习</a><a class="post-meta__tags" href="/tags/Verilog/">Verilog</a></div><div class="post_share"><div class="social-share" data-image="https://i0.hdslb.com/bfs/new_dyn/4a449b30229b3128071e9b4b7ce2bfea401742377.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/caed4be1.html"><img class="prev-cover" src="https://www.logosc.cn/uploads/resources/2018/11/06/1541475200.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Verilog学习笔记3，奇偶校验</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/caed4be1.html" title="Verilog学习笔记3，奇偶校验"><img class="cover" src="https://www.logosc.cn/uploads/resources/2018/11/06/1541475200.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-18</div><div class="title">Verilog学习笔记3，奇偶校验</div></div></a></div><div><a href="/post/d44bf58c.html" title="Verilog 学习笔记2 异步复位串联T触发器"><img class="cover" src="https://i0.hdslb.com/bfs/new_dyn/919903f868baafdb6585829c90f2ba7e401742377.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-17</div><div class="title">Verilog 学习笔记2 异步复位串联T触发器</div></div></a></div><div><a href="/post/4f24eca6.html" title="Verilog学习笔记1"><img class="cover" src="/img/p4.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-11</div><div class="title">Verilog学习笔记1</div></div></a></div><div><a href="/post/96be88e3.html" title="Markdown语法学习"><img class="cover" src="https://i2.hdslb.com/bfs/archive/034f09340418073d452dea3052f04850d6a1cee9.jpg@672w_378h_1c.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-14</div><div class="title">Markdown语法学习</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Muyu</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/Muyu1376"><i class="fab fa-github"></i><span>Github主页</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Muyu1376" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:space.astronomy1376@gmail.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的记录本，记录本正在建设中，不定时更新</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Verilog%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04%EF%BC%8C%E7%A7%BB%E4%BD%8D%E8%BF%90%E7%AE%97%E4%B8%8E%E4%B9%98%E6%B3%95"><span class="toc-text">Verilog学习笔记4，移位运算与乘法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-text">题目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">移位运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%BC%E6%8E%A5%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">拼接运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-text">题目分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%9D%9E%E9%98%BB%E5%A1%9E%E8%B5%8B%E5%80%BC"><span class="toc-text">阻塞赋值与非阻塞赋值</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/81715675.html" title="Verilog学习笔记4，移位运算与乘法"><img src="https://i0.hdslb.com/bfs/new_dyn/4a449b30229b3128071e9b4b7ce2bfea401742377.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Verilog学习笔记4，移位运算与乘法"/></a><div class="content"><a class="title" href="/post/81715675.html" title="Verilog学习笔记4，移位运算与乘法">Verilog学习笔记4，移位运算与乘法</a><time datetime="2022-07-19T18:41:45.000Z" title="发表于 2022-07-20 02:41:45">2022-07-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/caed4be1.html" title="Verilog学习笔记3，奇偶校验"><img src="https://www.logosc.cn/uploads/resources/2018/11/06/1541475200.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Verilog学习笔记3，奇偶校验"/></a><div class="content"><a class="title" href="/post/caed4be1.html" title="Verilog学习笔记3，奇偶校验">Verilog学习笔记3，奇偶校验</a><time datetime="2022-07-18T14:19:39.000Z" title="发表于 2022-07-18 22:19:39">2022-07-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d44bf58c.html" title="Verilog 学习笔记2 异步复位串联T触发器"><img src="https://i0.hdslb.com/bfs/new_dyn/919903f868baafdb6585829c90f2ba7e401742377.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Verilog 学习笔记2 异步复位串联T触发器"/></a><div class="content"><a class="title" href="/post/d44bf58c.html" title="Verilog 学习笔记2 异步复位串联T触发器">Verilog 学习笔记2 异步复位串联T触发器</a><time datetime="2022-07-17T14:31:26.000Z" title="发表于 2022-07-17 22:31:26">2022-07-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/96be88e3.html" title="Markdown语法学习"><img src="https://i2.hdslb.com/bfs/archive/034f09340418073d452dea3052f04850d6a1cee9.jpg@672w_378h_1c.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Markdown语法学习"/></a><div class="content"><a class="title" href="/post/96be88e3.html" title="Markdown语法学习">Markdown语法学习</a><time datetime="2022-07-13T19:18:38.000Z" title="发表于 2022-07-14 03:18:38">2022-07-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/16db4f89.html" title="picture"><img src="/img/bg4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="picture"/></a><div class="content"><a class="title" href="/post/16db4f89.html" title="picture">picture</a><time datetime="2022-07-12T09:45:26.000Z" title="发表于 2022-07-12 17:45:26">2022-07-12</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/bg2.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 By Muyu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">欢迎访问我的记录本<br>本网站由<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="/img/youpai.png" width="45" height="20"></a>提供CDN加速/云储存服务</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
