@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>FPGA学习笔记1--未使用引脚的状态及程序的固化 | 暮雨</title><meta name="keywords" content="硬件开发,FPGA"><meta name="author" content="Muyu,space.astronomy1376@163.com"><meta name="copyright" content="Muyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="未使用引脚的状态在FPGA开发板中，需要对没有使用的引脚状态进行定义，通常会设置为三态输入，即选项As input tri-stated. 设置方法为Assigements--&gt;Device--&gt;Device and Pin Options--&gt;Unused Pins,在打开的界面中选择三态输入的选项。 在这个界面中As input tri-stated weak pull-up">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FPGA学习笔记1--未使用引脚的状态及程序的固化">
+<meta property="og:url" content="https://www.muyu1376.xyz/post/48f7affc.html">
+<meta property="og:site_name" content="暮雨">
+<meta property="og:description" content="未使用引脚的状态在FPGA开发板中，需要对没有使用的引脚状态进行定义，通常会设置为三态输入，即选项As input tri-stated. 设置方法为Assigements--&gt;Device--&gt;Device and Pin Options--&gt;Unused Pins,在打开的界面中选择三态输入的选项。 在这个界面中As input tri-stated weak pull-up">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.muyu1376.xyz/img/bg4.png">
+<meta property="article:published_time" content="2022-08-05T02:40:54.000Z">
+<meta property="article:modified_time" content="2022-08-05T02:48:55.104Z">
+<meta property="article:author" content="Muyu">
+<meta property="article:tag" content="硬件开发">
+<meta property="article:tag" content="FPGA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.muyu1376.xyz/img/bg4.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.muyu1376.xyz/post/48f7affc"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Muyu","link":"链接: ","source":"来源: 暮雨","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'FPGA学习笔记1--未使用引脚的状态及程序的固化',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-08-05 10:48:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/wallpaper/"><i class="fa-fw fas fa-heart"></i><span> 壁纸</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg4.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">暮雨</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/wallpaper/"><i class="fa-fw fas fa-heart"></i><span> 壁纸</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">FPGA学习笔记1--未使用引脚的状态及程序的固化<a class="post-edit-link" href="https://github.com/Muyu1376/Blog/tree/main/source/_posts/fpga1.md" rel="external nofollow noreferrer" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-05T02:40:54.000Z" title="发表于 2022-08-05 10:40:54">2022-08-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-08-05T02:48:55.104Z" title="更新于 2022-08-05 10:48:55">2022-08-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/FPGA/">FPGA</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">431</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="FPGA学习笔记1--未使用引脚的状态及程序的固化"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="未使用引脚的状态"><a href="#未使用引脚的状态" class="headerlink" title="未使用引脚的状态"></a>未使用引脚的状态</h2><p>在FPGA开发板中，需要对没有使用的引脚状态进行定义，通常会设置为<strong>三态输入</strong>，即选项<code>As input tri-stated</code>.</p>
+<p>设置方法为<code>Assigements--&gt;Device--&gt;Device and Pin Options--&gt;Unused Pins</code>,在打开的界面中选择三态输入的选项。</p>
+<p>在这个界面中<code>As input tri-stated weak pull-up</code>选项指的是弱上拉输入，意为<strong>所有未被定义的引脚都可以作为输入引脚，并会附加弱上拉电阻</strong>。<code>As output driving ground</code>选项是一个危险选项，意为<strong>所有未被使用引脚都会被下拉到地</strong>，当PCB外围电路被上拉到高电位时，引脚会产生强烈的灌电流输入</p>
+<p>在定义完未被使用的引脚状态后需要重新编译。</p>
+<h2 id="程序的固化"><a href="#程序的固化" class="headerlink" title="程序的固化"></a>程序的固化</h2><p>由于SRAM的掉电易失特性，当给开发板断电并重新上电之后，需要重新下载程序，因此需要使用片外Flash存储网表。</p>
+<p>选择<code>File--&gt;Convert Programming Files...</code></p>
+<p>在打开的界面中<code>Programming file type:</code>选择输出文件的类型，此处选择<code>Configuration File(.jic)</code>.<br><code>Configuration device</code>选项选择使用的Flash的型号，笔者使用的野火征途开发板，此处选择<code>EPCS16</code>。<br><code>File name</code>选项选择输出位置</p>
+<p>在下方的<code>Input files to convert</code>框中选择<code>Flash loader</code>,然后点击<code>Add device</code>，在弹出的对话框中选择使用的FPGA芯片的型号，征途开发板选择<code>EP4CE10</code>，点击ok<br>随后点击<code>Soft Data</code>后选择<code>Add files</code>按钮选择之前生成的<code>.sof</code>文件，之后点击<code>Generate</code>按钮生成<code>.jic</code>文件</p>
+<p>在程序下载界面中选择<code>.jic</code>文件进行下载即可。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://www.muyu1376.xyz/">Muyu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.muyu1376.xyz/post/48f7affc.html">https://www.muyu1376.xyz/post/48f7affc.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.muyu1376.xyz" target="_blank">暮雨</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A1%AC%E4%BB%B6%E5%BC%80%E5%8F%91/">硬件开发</a><a class="post-meta__tags" href="/tags/FPGA/">FPGA</a></div><div class="post_share"><div class="social-share" data-image="/img/bg4.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/post/81715675.html"><img class="prev-cover" src="https://i0.hdslb.com/bfs/new_dyn/4a449b30229b3128071e9b4b7ce2bfea401742377.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Verilog学习笔记4，移位运算与乘法</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Muyu</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/Muyu1376"><i class="fab fa-github"></i><span>Github主页</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Muyu1376" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:space.astronomy1376@gmail.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的记录本，记录本正在建设中，不定时更新</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AA%E4%BD%BF%E7%94%A8%E5%BC%95%E8%84%9A%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-text">未使用引脚的状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9B%BA%E5%8C%96"><span class="toc-text">程序的固化</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/48f7affc.html" title="FPGA学习笔记1--未使用引脚的状态及程序的固化"><img src="/img/bg4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="FPGA学习笔记1--未使用引脚的状态及程序的固化"/></a><div class="content"><a class="title" href="/post/48f7affc.html" title="FPGA学习笔记1--未使用引脚的状态及程序的固化">FPGA学习笔记1--未使用引脚的状态及程序的固化</a><time datetime="2022-08-05T02:40:54.000Z" title="发表于 2022-08-05 10:40:54">2022-08-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/81715675.html" title="Verilog学习笔记4，移位运算与乘法"><img src="https://i0.hdslb.com/bfs/new_dyn/4a449b30229b3128071e9b4b7ce2bfea401742377.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Verilog学习笔记4，移位运算与乘法"/></a><div class="content"><a class="title" href="/post/81715675.html" title="Verilog学习笔记4，移位运算与乘法">Verilog学习笔记4，移位运算与乘法</a><time datetime="2022-07-19T18:41:45.000Z" title="发表于 2022-07-20 02:41:45">2022-07-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/caed4be1.html" title="Verilog学习笔记3，奇偶校验"><img src="https://www.logosc.cn/uploads/resources/2018/11/06/1541475200.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Verilog学习笔记3，奇偶校验"/></a><div class="content"><a class="title" href="/post/caed4be1.html" title="Verilog学习笔记3，奇偶校验">Verilog学习笔记3，奇偶校验</a><time datetime="2022-07-18T14:19:39.000Z" title="发表于 2022-07-18 22:19:39">2022-07-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d44bf58c.html" title="Verilog 学习笔记2 异步复位串联T触发器"><img src="https://i0.hdslb.com/bfs/new_dyn/919903f868baafdb6585829c90f2ba7e401742377.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Verilog 学习笔记2 异步复位串联T触发器"/></a><div class="content"><a class="title" href="/post/d44bf58c.html" title="Verilog 学习笔记2 异步复位串联T触发器">Verilog 学习笔记2 异步复位串联T触发器</a><time datetime="2022-07-17T14:31:26.000Z" title="发表于 2022-07-17 22:31:26">2022-07-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/96be88e3.html" title="Markdown语法学习"><img src="https://i2.hdslb.com/bfs/archive/034f09340418073d452dea3052f04850d6a1cee9.jpg@672w_378h_1c.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Markdown语法学习"/></a><div class="content"><a class="title" href="/post/96be88e3.html" title="Markdown语法学习">Markdown语法学习</a><time datetime="2022-07-13T19:18:38.000Z" title="发表于 2022-07-14 03:18:38">2022-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/bg2.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 By Muyu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">欢迎访问我的记录本<br>本网站由<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="/img/youpai.png" width="45" height="20"></a>提供CDN加速/云储存服务</br><a href="https://beian.miit.gov.cn/" rel="external nofollow noreferrer" target="_blank">鲁ICP备2022024222号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
